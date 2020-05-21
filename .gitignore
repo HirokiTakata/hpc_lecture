@@ -1,0 +1,5 @@
+*.dat
+*.o
+*.out
+*.s
+.ipynb_checkpoints
