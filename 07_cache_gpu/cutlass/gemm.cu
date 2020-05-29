@@ -15,8 +15,7 @@ using namespace cutlass;
 int main(int argc, const char **argv) {
   int m = 10240, k = 4096, n = 4096;
   float alpha = 1.0, beta = 0.0;
-  static const matrix_transform_t::kind_t TransformA = matrix_transform_t::NonTranspose;
-  static const matrix_transform_t::kind_t TransformB = matrix_transform_t::NonTranspose;
+  static const matrix_transform_t::kind_t TransformA = matrix_transform_t::NonTranspose, TransformB = matrix_transform_t::NonTranspose;
   typedef float value_t,accum_t;
   int g_timing_iterations = 10;
   cudaStream_t stream = 0;
