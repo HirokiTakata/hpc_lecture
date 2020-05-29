@@ -1,6 +1,4 @@
 #include <cublas_v2.h>
-#define DEBUG
-
 #include <gemm/dispatch.h>
 #include <gemm/epilogue_function.h>
 #include "util/matrix.h"
@@ -27,20 +25,9 @@ int main(int argc, const char **argv) {
   for (int i = 0; i < g_timing_iterations+2; i++) {
     if (i == 2) timer.start();
     CUDA_PERROR(cublasSgemm(
-                            g_cublas_handle,
-                            (cublasOperation_t) TransformA,
-                            (cublasOperation_t) TransformB,
-                            m,
-                            n,
-                            k,
-                            &alpha,
-                            A.d_data(),
-                            m,
-                            B.d_data(),
-                            k,
-                            &beta,
-                            C.d_data(),
-                            m));
+                            g_cublas_handle,(cublasOperation_t) TransformA,(cublasOperation_t) TransformB,
+                            m,n,k,
+                            &alpha,A.d_data(),m,B.d_data(),k,&beta,C.d_data(),m));
   }
   timer.stop();
   int64_t num_flops = (2 * int64_t(m) * int64_t(n) * int64_t(k)) + (2 * int64_t(m) * int64_t(n));
@@ -51,16 +38,9 @@ int main(int argc, const char **argv) {
   for (int i = 0; i < g_timing_iterations+2; i++) {
     if (i == 2) timer.start();
     gemm::dispatch<epilogue_op_t>(
-        m,
-        n,
-        k, 
-        alpha,
-        beta,
-        A.d_data(),
-        B.d_data(),
-        C2.d_data(),
-        stream,
-        false);
+        m, n, k, alpha, beta,
+        A.d_data(), B.d_data(), C2.d_data(),
+        stream, false);
   }
   timer.stop();
   double tcutlass = timer.elapsed_millis() / g_timing_iterations;
