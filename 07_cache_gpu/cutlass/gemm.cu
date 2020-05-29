@@ -1,7 +1,3 @@
-#include <iostream>
-#include <typeinfo>
-#include <random>
-#include <stdint.h>
 #include <cublas_v2.h>
 #define DEBUG
 
@@ -21,8 +17,6 @@ int main(int argc, const char **argv) {
   matrix<float> A(m, k), B(k, n), C(m, n), C2(m, n);
   A.random();
   B.random();
-  //C.fill_ramp(0,0);
-  //C2.fill_ramp(0,0);
   A.sync_device();
   B.sync_device();
   C.sync_device();
