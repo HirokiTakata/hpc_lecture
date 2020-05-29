@@ -19,7 +19,6 @@ int main() {
     __m256 yi = _mm256_set1_ps(y[i]);
     __m256 tempx,tempy;
     for(int j=0; j<N; j++) {
-<<<<<<< HEAD
         __m256 xj = _mm256_load_ps(x);
         __m256 yj = _mm256_load_ps(y);
 	__m256 rx = _mm256_sub_ps(xi,xj);
@@ -32,8 +31,6 @@ int main() {
 	r3 = _mm256_blendv_ps(zeros,r3,mask);
 	tempx = _mm256_mul_ps(rx,_mm256_mul_ps(vm,r3));
 	tempy = _mm256_mul_ps(ry,_mm256_mul_ps(vm,r3));
-=======
->>>>>>> root_branch/master
     }
     tempx = _mm256_hadd_ps(tempx,_mm256_setzero_ps());
     tempx = _mm256_hadd_ps(tempx,_mm256_setzero_ps());
