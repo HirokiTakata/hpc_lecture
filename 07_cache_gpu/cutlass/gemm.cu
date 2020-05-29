@@ -16,15 +16,13 @@ int main(int argc, const char **argv) {
   int m = 10240, k = 4096, n = 4096;
   float alpha = 1.0, beta = 0.0;
   static const matrix_transform_t::kind_t TransformA = matrix_transform_t::NonTranspose, TransformB = matrix_transform_t::NonTranspose;
-  typedef float value_t,accum_t;
   int g_timing_iterations = 10;
   cudaStream_t stream = 0;
-  matrix<value_t> A(m, k), B(k, n);
-  matrix<accum_t> C(m, n), C2(m, n);
+  matrix<float> A(m, k), B(k, n), C(m, n), C2(m, n);
   A.random();
   B.random();
-  C.fill_ramp(0,0);
-  C2.fill_ramp(0,0);
+  //C.fill_ramp(0,0);
+  //C2.fill_ramp(0,0);
   A.sync_device();
   B.sync_device();
   C.sync_device();
@@ -61,7 +59,7 @@ int main(int argc, const char **argv) {
     gemm::dispatch<epilogue_op_t>(
         m,
         n,
-        k,
+        k, 
         alpha,
         beta,
         A.d_data(),
