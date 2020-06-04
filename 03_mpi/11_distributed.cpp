@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
     ibody[i].m = jbody[i].m = kbody[i].m = drand48();
     ibody[i].fx = jbody[i].fx = ibody[i].fy = jbody[i].fy = kbody[i].fx = kbody[i].fy = 0;
   }
-  int recv_from = (rank + 1) % size;
   int send_to = (rank - 1 + size) % size;
   MPI_Datatype MPI_BODY;
   MPI_Type_contiguous(5, MPI_DOUBLE, &MPI_BODY);

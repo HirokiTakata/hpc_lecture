@@ -40,4 +40,6 @@ int main() {
     fy[i] = -(((float*)&tempy)[0]+((float*)&tempy)[4]);
     printf("%d %g %g\n",i,fx[i],fy[i]);
   }
+  for(int i=0; i<N; i++)
+    printf("%d %g %g\n",i,fx[i],fy[i]);
 }
