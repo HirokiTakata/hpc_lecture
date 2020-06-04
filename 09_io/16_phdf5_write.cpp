@@ -3,28 +3,30 @@
 #include <chrono>
 #include <vector>
 #include "hdf5.h"
+#include "mpi.h"
 using namespace std;
 
 int main (int argc, char** argv) {
   const int NX = 10000, NY = 10000;
-  hsize_t dim[2] = {2, 2};
+  hsize_t dim[2] = {4, 4};
   int mpisize, mpirank;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &mpisize);
   MPI_Comm_rank(MPI_COMM_WORLD, &mpirank);
-  assert(mpisize == dim[0]*dim[1]);
+  assert(mpisize*4 == dim[0]*dim[1]);
   hsize_t N[2] = {NX, NY};
-  hsize_t Nlocal[2] = {NX/dim[0], NY/dim[1]};
-  hsize_t offset[2] = {mpirank / dim[0], mpirank % dim[0]};
+  hsize_t Nlocal[2] = {NX/dim[0], NY/dim[1]};//Block size
+  hsize_t Nspace[2] = {NX/2,NY/2};
+  hsize_t offset[2] = {mpirank /(dim[0]/2), mpirank %(dim[1]/2)};
   for(int i=0; i<2; i++) offset[i] *= Nlocal[i];
-  hsize_t count[2] = {1,1};
-  hsize_t stride[2] = {1,1};
-  vector<int> buffer(Nlocal[0]*Nlocal[1],mpirank);
+  hsize_t count[2] = {2,2};
+  hsize_t stride[2] = {NX/2,NY/2};
+  vector<int> buffer(Nlocal[0]*Nlocal[1]*4,mpirank);
   hid_t plist = H5Pcreate(H5P_FILE_ACCESS);
   H5Pset_fapl_mpio(plist, MPI_COMM_WORLD, MPI_INFO_NULL);
   hid_t file = H5Fcreate("data.h5", H5F_ACC_TRUNC, H5P_DEFAULT, plist);
   hid_t globalspace = H5Screate_simple(2, N, NULL);
-  hid_t localspace = H5Screate_simple(2, Nlocal, NULL);
+  hid_t localspace = H5Screate_simple(2, Nspace, NULL);
   hid_t dataset = H5Dcreate(file, "dataset", H5T_NATIVE_INT, globalspace,
 			    H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
   H5Sselect_hyperslab(globalspace, H5S_SELECT_SET, offset, stride, count, Nlocal);
