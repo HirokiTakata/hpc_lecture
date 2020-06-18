@@ -101,10 +101,8 @@ int main(int argc,char** argv){
 	double F = 1;
 	double dt = 0.01;
 	vector<vector<double> > u(ny, vector<double>(nx, 0));
-	//double u[ny][nx];
 	vector<vector<double> > un(ny, vector<double>(nx, 0));
 	vector<vector<double> > v(ny, vector<double>(nx, 0));
-	//double v[ny][nx];
 	vector<vector<double> > vn(ny, vector<double>(nx, 0));
 	vector<vector<double> > p(ny, vector<double>(nx, 0));
 	vector<vector<double> > pn(ny, vector<double>(nx, 0));
