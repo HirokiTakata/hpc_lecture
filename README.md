@@ -2,6 +2,8 @@
 ## Hiroki Takata
 # hpc_lecture
 
+高速化・並列化実装の課題をアップしています。
+
 |          | Topic                                | Sample code               |
 | -------- | ------------------------------------ | ------------------------- |
 | Class 1  | Introduction to parallel programming |                           |
